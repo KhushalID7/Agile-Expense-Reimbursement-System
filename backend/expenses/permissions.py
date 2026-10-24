@@ -6,3 +6,30 @@ class CanCreateExpense(BasePermission):
 
     def has_permission(self, request, view):
         return request.user.is_authenticated and request.user.role == 'EMPLOYEE'
+
+
+class CanMakeExpenseDecision(BasePermission):
+    message = 'Only managers or admins can decide expenses.'
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role in {
+            'MANAGER',
+            'ADMIN',
+        }
+
+
+class IsEmployeeRole(BasePermission):
+    message = 'Only employees can access this dashboard.'
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role == 'EMPLOYEE'
+
+
+class IsManagerOrAdminRole(BasePermission):
+    message = 'Only managers or admins can access this dashboard.'
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and request.user.role in {
+            'MANAGER',
+            'ADMIN',
+        }
