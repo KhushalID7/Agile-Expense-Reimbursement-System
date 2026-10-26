@@ -106,6 +106,8 @@ function ExpenseDetail({ expenseId, onBack }: { expenseId: number; onBack: () =>
 
   useEffect(() => {
     const controller = new AbortController()
+    // This state represents the lifecycle of the cancellable request started below.
+    // oxlint-disable-next-line react/set-state-in-effect
     setIsLoading(true)
     setError(null)
     getExpense(expenseId, controller.signal)
@@ -205,6 +207,8 @@ function ExpenseList({ onSelect }: ExpenseListProps) {
 
   useEffect(() => {
     const controller = new AbortController()
+    // This state represents the lifecycle of the cancellable request started below.
+    // oxlint-disable-next-line react/set-state-in-effect
     setIsLoading(true)
     setError(null)
     getExpenses(filters, page, controller.signal)

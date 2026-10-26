@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import { ApiError } from '../api/client'
 import {
@@ -9,7 +9,7 @@ import {
   getPendingApprovals,
   rejectExpense,
 } from '../api/expenses'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../auth/useAuth'
 import { Icon } from '../components/Icon'
 import type {
   Expense,
@@ -192,8 +192,10 @@ function ReviewExpense({ expenseId, onBack, onQueueRefresh }: { expenseId: numbe
   const [isLoading, setIsLoading] = useState(true)
   const [retryKey, setRetryKey] = useState(0)
 
-  const loadExpense = () => {
+  const loadExpense = useCallback(() => {
     const controller = new AbortController()
+    // This state represents the lifecycle of the cancellable request started below.
+    // oxlint-disable-next-line react/set-state-in-effect
     setIsLoading(true)
     setError(null)
     getExpense(expenseId, controller.signal)
@@ -208,9 +210,9 @@ function ReviewExpense({ expenseId, onBack, onQueueRefresh }: { expenseId: numbe
         if (!controller.signal.aborted) setIsLoading(false)
       })
     return () => controller.abort()
-  }
+  }, [expenseId, retryKey])
 
-  useEffect(() => loadExpense(), [expenseId, retryKey])
+  useEffect(() => loadExpense(), [loadExpense])
 
   if (isLoading) return <div className="surface dashboard-status" role="status"><span className="spinner" /><span>Loading expense review</span></div>
   if (error) {
@@ -279,6 +281,8 @@ function ApprovalQueue({ onSelect }: { onSelect: (id: number) => void }) {
 
   useEffect(() => {
     const controller = new AbortController()
+    // This state represents the lifecycle of the cancellable request started below.
+    // oxlint-disable-next-line react/set-state-in-effect
     setIsLoading(true)
     setError(null)
     getPendingApprovals(page, controller.signal)

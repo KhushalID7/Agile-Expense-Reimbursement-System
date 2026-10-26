@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { ApiError } from '../api/client'
 import { getEmployeeDashboard, getManagerDashboard } from '../api/dashboard'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../auth/useAuth'
 import { Icon } from '../components/Icon'
 import type { DashboardSummary } from '../types/dashboard'
 
@@ -54,6 +54,8 @@ export function DashboardPage() {
 
   useEffect(() => {
     const controller = new AbortController()
+    // This state represents the lifecycle of the cancellable request started below.
+    // oxlint-disable-next-line react/set-state-in-effect
     setIsLoading(true)
     setError(null)
     const loadDashboard = isEmployee ? getEmployeeDashboard : getManagerDashboard

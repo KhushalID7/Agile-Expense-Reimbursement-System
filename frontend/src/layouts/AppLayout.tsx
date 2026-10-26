@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { ReactNode } from 'react'
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../auth/useAuth'
 import { BrandMark } from '../components/BrandMark'
 import { Icon } from '../components/Icon'
 import type { UserRole } from '../types/auth'

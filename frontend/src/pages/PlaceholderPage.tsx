@@ -1,4 +1,4 @@
-import { useAuth } from '../auth/AuthContext'
+import { useAuth } from '../auth/useAuth'
 import { Icon } from '../components/Icon'
 import { DashboardPage } from './DashboardPage'
 import { ExpensesPage } from './ExpensesPage'
